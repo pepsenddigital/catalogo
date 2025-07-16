@@ -1,22 +1,27 @@
-# Backend: Conexión con tu repositorio de GitHub
 backend:
-  name: git-gateway
-  repo: pepsend/catalogo # ¡Listo para ti!
-  branch: main 
+  name: github
+  repo: pepsend/catalogo
+  branch: main
+  site_domain: pepsendofertas.netlify.app
 
-# Media: Dónde se guardarán las imágenes que subas
-media_folder: "assets/uploads"
-public_folder: "/assets/uploads"
+publish_mode: editorial_workflow
 
-# Collections: Define el tipo de contenido que gestionarás (tus juegos)
+media_folder: "assets/images"
+public_folder: "/assets/images"
+
 collections:
   - name: "juegos"
     label: "Juegos"
     folder: "_juegos"
     create: true
-    slug: "{{slug}}" # <-- ¡Esta es la línea corregida!
+    slug: "{{slug}}"
     fields:
-      - {label: "Nombre del Juego", name: "nombre", widget: "string"}
-      - {label: "Precio", name: "precio", widget: "string"}
-      - {label: "Portada del Juego", name: "portada", widget: "image"}
-
+      - { label: "Nombre del Juego", name: "nombre", widget: "string" }
+      - { label: "Precio", name: "precio", widget: "string" }
+      - { label: "Portada del Juego", name: "portada", widget: "image" }
+      # --- ¡AQUÍ ESTÁ LA NUEVA SECCIÓN! ---
+      - label: "Etiqueta (Opcional)"
+        name: "etiqueta"
+        widget: "string"
+        required: false
+        hint: "Escribe aquí la etiqueta que aparecerá sobre la imagen (ej: ¡Oferta!, Nuevo, Más Vendido). Déjalo en blanco si no quieres ninguna etiqueta."
