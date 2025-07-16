@@ -101,19 +101,22 @@
         .juego-card:hover .juego-imagen-wrapper img {
             transform: scale(1.05);
         }
-
+        
+        /* --- ESTA ES LA SECCIÓN CORREGIDA --- */
         .juego-info {
             padding: 20px;
             text-align: left;
-            flex-grow: 1;
+            flex-grow: 1; /* Permite que esta sección crezca para llenar el espacio vertical */
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            /* La propiedad justify-content ya no es necesaria aquí */
         }
         .juego-info h3 {
             margin: 0 0 10px 0;
             font-size: 1.4rem;
             font-weight: 600;
+            /* Damos una altura mínima para estabilizar el diseño incluso con títulos cortos */
+            min-height: 67px; 
         }
         .juego-info .precio {
             margin: 10px 0;
@@ -130,9 +133,12 @@
             text-decoration: none;
             text-align: center;
             font-weight: 600;
-            margin-top: 15px;
+            /* LA MAGIA: El margen superior automático empuja el botón a la base */
+            margin-top: auto; 
             transition: background-color 0.2s ease;
         }
+        /* --- FIN DE LA CORRECCIÓN --- */
+
         .juego-info .boton-comprar:hover {
             background-color: #0056b3;
         }
@@ -236,17 +242,13 @@
                         const card = document.createElement('div');
                         card.className = 'juego-card';
                         
-                        // --- ESTA ES LA LÍNEA CORREGIDA Y LA CLAVE DE TODO ---
-                        // Ahora el enlace incluye el nombre Y el precio del juego.
                         card.innerHTML = `
                             <div class="juego-imagen-wrapper">
                                 <img src="${juego.portada}" alt="Portada de ${juego.nombre}">
                             </div>
                             <div class="juego-info">
-                                <div>
-                                    <h3>${juego.nombre}</h3>
-                                    <p class="precio">${juego.precio}</p>
-                                </div>
+                                <h3>${juego.nombre}</h3>
+                                <p class="precio">${juego.precio}</p>
                                 <a href="detalle.html?juego=${encodeURIComponent(juego.nombre)}&precio=${encodeURIComponent(juego.precio)}" class="boton-comprar">Ver Oferta</a>
                             </div>
                         `;
