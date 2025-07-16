@@ -46,6 +46,26 @@
             margin: 0 auto;
         }
 
+        /* Estilo para el input de búsqueda */
+        #search-input {
+            width: 100%;
+            padding: 12px 20px;
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+            font-family: 'Poppins', sans-serif;
+            color: var(--color-texto-principal);
+            background-color: var(--color-superficie);
+            border: 1px solid var(--color-borde);
+            border-radius: 8px;
+            box-sizing: border-box;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        #search-input:focus {
+            outline: none;
+            border-color: var(--color-primario);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+        }
+
         #juegos-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -57,7 +77,7 @@
             border-radius: 12px;
             border: 1px solid var(--color-borde);
             overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
             display: flex;
             flex-direction: column;
         }
@@ -66,9 +86,7 @@
             box-shadow: 0 8px 24px rgba(0, 123, 255, 0.2);
         }
         
-        /* --- LA SOLUCIÓN FINAL: MARCO RECTANGULAR Y RELLENO PERFECTO --- */
         .juego-imagen-wrapper {
-            /* 1. Cambiamos el marco a un rectángulo vertical (proporción 3:4) */
             aspect-ratio: 3 / 4; 
             overflow: hidden;
             background-color: #000;
@@ -77,7 +95,6 @@
         .juego-imagen-wrapper img {
             width: 100%;
             height: 100%;
-            /* 2. La imagen cubre el marco, manteniendo su proporción */
             object-fit: cover; 
             transition: transform 0.4s ease;
         }
@@ -85,7 +102,6 @@
         .juego-card:hover .juego-imagen-wrapper img {
             transform: scale(1.05);
         }
-        /* --- FIN DE LA SOLUCIÓN FINAL --- */
 
         .juego-info {
             padding: 20px;
@@ -156,6 +172,9 @@
     </header>
 
     <main>
+        <!-- HTML: El nuevo campo de búsqueda -->
+        <input type="text" id="search-input" placeholder="Buscar por nombre...">
+        
         <div id="loader" class="loader"></div>
         <div id="juegos-container"></div>
     </main>
@@ -164,6 +183,7 @@
         <p>&copy; 2024 Tu Marca. Todos los derechos reservados.</p>
     </footer>
 
+    <!-- JavaScript: Lógica de carga de juegos + lógica del buscador -->
     <script>
         function parseFrontmatter(text) {
             const frontmatter = {};
@@ -179,6 +199,21 @@
                 }
             }
             return frontmatter;
+        }
+
+        // JavaScript: Función que filtra los juegos
+        function filtrarJuegos() {
+            const filtro = document.getElementById('search-input').value.toLowerCase();
+            const juegos = document.querySelectorAll('.juego-card');
+            
+            juegos.forEach(juego => {
+                const nombre = juego.querySelector('h3').textContent.toLowerCase();
+                if (nombre.includes(filtro)) {
+                    juego.style.display = 'flex'; // Usamos flex para que se vea bien
+                } else {
+                    juego.style.display = 'none';
+                }
+            });
         }
 
         async function cargarJuegos() {
@@ -225,6 +260,8 @@
                 container.innerHTML = '<p>Hubo un error al cargar los juegos. Revisa la consola para más detalles.</p>';
             } finally {
                 loader.style.display = 'none';
+                // Asociamos el evento de búsqueda DESPUÉS de cargar los juegos
+                document.getElementById('search-input').addEventListener('input', filtrarJuegos);
             }
         }
 
