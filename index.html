@@ -46,7 +46,6 @@
             margin: 0 auto;
         }
 
-        /* Estilo para el input de búsqueda */
         #search-input {
             width: 100%;
             padding: 12px 20px;
@@ -172,7 +171,6 @@
     </header>
 
     <main>
-        <!-- HTML: El nuevo campo de búsqueda -->
         <input type="text" id="search-input" placeholder="Buscar por nombre...">
         
         <div id="loader" class="loader"></div>
@@ -183,7 +181,6 @@
         <p>&copy; 2024 Tu Marca. Todos los derechos reservados.</p>
     </footer>
 
-    <!-- JavaScript: Lógica de carga de juegos + lógica del buscador -->
     <script>
         function parseFrontmatter(text) {
             const frontmatter = {};
@@ -201,7 +198,6 @@
             return frontmatter;
         }
 
-        // JavaScript: Función que filtra los juegos
         function filtrarJuegos() {
             const filtro = document.getElementById('search-input').value.toLowerCase();
             const juegos = document.querySelectorAll('.juego-card');
@@ -209,7 +205,7 @@
             juegos.forEach(juego => {
                 const nombre = juego.querySelector('h3').textContent.toLowerCase();
                 if (nombre.includes(filtro)) {
-                    juego.style.display = 'flex'; // Usamos flex para que se vea bien
+                    juego.style.display = 'flex';
                 } else {
                     juego.style.display = 'none';
                 }
@@ -249,7 +245,7 @@
                                     <h3>${juego.nombre}</h3>
                                     <p class="precio">${juego.precio}</p>
                                 </div>
-                                <a href="#" class="boton-comprar">Ver Oferta</a>
+                                <a href="detalle.html?juego=${encodeURIComponent(juego.nombre)}" class="boton-comprar">Ver Oferta</a>
                             </div>
                         `;
                         container.appendChild(card);
@@ -260,7 +256,6 @@
                 container.innerHTML = '<p>Hubo un error al cargar los juegos. Revisa la consola para más detalles.</p>';
             } finally {
                 loader.style.display = 'none';
-                // Asociamos el evento de búsqueda DESPUÉS de cargar los juegos
                 document.getElementById('search-input').addEventListener('input', filtrarJuegos);
             }
         }
