@@ -14,8 +14,9 @@ collections:
     label: "Juegos"
     folder: "_juegos"
     create: true
-    slug: "{{slug}}"
+    slug: "{{slug}}" # <-- ¡Esta es la línea corregida!
     fields:
       - {label: "Nombre del Juego", name: "nombre", widget: "string"}
       - {label: "Precio", name: "precio", widget: "string"}
       - {label: "Portada del Juego", name: "portada", widget: "image"}
+
