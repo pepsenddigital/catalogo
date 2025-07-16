@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles del Producto</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --color-primario: #007bff;
+            --color-fondo: #121212;
+            --color-superficie: #1e1e1e;
+            --color-texto-principal: #ffffff;
+            --color-texto-secundario: #a0a0a0;
+            --color-borde: #333333;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            background-color: var(--color-fondo);
+            color: var(--color-texto-principal);
+        }
+        header {
+            background-color: var(--color-superficie);
+            padding: 20px 40px;
+            text-align: center;
+            border-bottom: 1px solid var(--color-borde);
+        }
+        h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--color-primario);
+        }
+        main {
+            padding: 40px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .descripcion-box {
+            background-color: var(--color-superficie);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid var(--color-borde);
+        }
+        .descripcion-box h2 {
+            margin-top: 0;
+            font-size: 1.8rem;
+            color: var(--color-primario);
+        }
+        .descripcion-box p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--color-texto-secundario);
+        }
+        .boton-whatsapp {
+            display: inline-block;
+            background-color: #25D366; /* Color de WhatsApp */
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            text-align: center;
+            font-weight: 600;
+            margin-top: 25px;
+            font-size: 1.2rem;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+        .boton-whatsapp:hover {
+            background-color: #128C7E;
+            transform: scale(1.05);
+        }
+        footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 40px;
+            background-color: var(--color-superficie);
+            border-top: 1px solid var(--color-borde);
+            color: var(--color-texto-secundario);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Game Deals</h1>
+    </header>
+    <main>
+        <div class="descripcion-box">
+            <h2>Cómo Funciona el Producto</h2>
+            <p>
+                <strong>Cuenta Principal:</strong> Disfruta acceso inmediato al juego o suscripción directamente desde tu perfil de Xbox al vincular un correo y contraseña. Esta opción te permite jugar sin complicaciones, sin necesidad de canjear códigos, y a un precio mucho más accesible. Perfecta para quienes valoran la rapidez, la comodidad y el ahorro. 🎮✨
+            </p>
+            <a href="#" id="whatsapp-link" class="boton-whatsapp" target="_blank" rel="noopener noreferrer">
+                Comprar Ahora por WhatsApp
+            </a>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 Tu Marca. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const nombreJuego = params.get('juego') || 'un juego';
+
+            // --- ¡IMPORTANTE! CAMBIA ESTE NÚMERO ---
+            // Pon tu número de WhatsApp con el código de país, sin el "+", espacios ni guiones.
+            // Por ejemplo, si tu número es de Argentina (+54), sería: 54911...
+            const telefono = 'TU_NUMERO_DE_WHATSAPP_AQUI'; 
+            
+            const mensajeBase = `Hola, estoy interesado en el juego: ${nombreJuego}. Me gustaría más información.`;
+            const linkFinal = `https://wa.me/${telefono}?text=${encodeURIComponent(mensajeBase)}`;
+            document.getElementById('whatsapp-link').href = linkFinal;
+        });
+    </script>
+</body>
+</html>
