@@ -236,6 +236,8 @@
                         const card = document.createElement('div');
                         card.className = 'juego-card';
                         
+                        // --- ESTA ES LA LÍNEA CORREGIDA Y LA CLAVE DE TODO ---
+                        // Ahora el enlace incluye el nombre Y el precio del juego.
                         card.innerHTML = `
                             <div class="juego-imagen-wrapper">
                                 <img src="${juego.portada}" alt="Portada de ${juego.nombre}">
@@ -245,7 +247,7 @@
                                     <h3>${juego.nombre}</h3>
                                     <p class="precio">${juego.precio}</p>
                                 </div>
-                                <a href="detalle.html?juego=${encodeURIComponent(juego.nombre)}" class="boton-comprar">Ver Oferta</a>
+                                <a href="detalle.html?juego=${encodeURIComponent(juego.nombre)}&precio=${encodeURIComponent(juego.precio)}" class="boton-comprar">Ver Oferta</a>
                             </div>
                         `;
                         container.appendChild(card);
