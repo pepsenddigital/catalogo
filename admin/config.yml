@@ -1,6 +1,6 @@
 # Backend: Conexión con tu repositorio de GitHub
 backend:
-  name: github
+  name: git-gateway
   repo: pepsend/catalogo # ¡Listo para ti!
   branch: main 
 
