@@ -14,6 +14,7 @@
     <style>
         :root {
             --color-primario: #007bff;
+            --color-oferta: #dc3545; /* Un rojo para las ofertas */
             --color-fondo: #121212;
             --color-superficie: #1e1e1e;
             --color-texto-principal: #ffffff;
@@ -28,23 +29,19 @@
         }
         header {
             background-color: var(--color-superficie);
-            padding: 20px 40px; 
+            padding: 20px 40px;
             text-align: center;
             border-bottom: 1px solid var(--color-borde);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
-        
-        /* --- ESTILOS DEL LOGO CORREGIDOS --- */
         .site-logo {
-            /* ¡AQUÍ ESTÁ EL AJUSTE FINAL! Aumentamos la altura a 144px (120px + 20%) */
-            height: 144px; 
+            height: 144px;
             width: auto;
             transition: transform 0.2s ease-in-out;
         }
         .site-logo:hover {
             transform: scale(1.05);
         }
-        
         main {
             padding: 40px 20px;
             max-width: 1400px;
@@ -119,6 +116,7 @@
             box-shadow: 0 8px 24px rgba(0, 123, 255, 0.2);
         }
         .juego-imagen-wrapper {
+            position: relative; /* Clave para posicionar la cinta */
             aspect-ratio: 3 / 4; 
             overflow: hidden;
             background-color: #000;
@@ -132,6 +130,24 @@
         .juego-card:hover .juego-imagen-wrapper img {
             transform: scale(1.05);
         }
+        
+        /* --- ESTILOS PARA LA NUEVA ETIQUETA --- */
+        .juego-etiqueta {
+            position: absolute;
+            top: 25px;
+            right: -35px;
+            transform: rotate(45deg);
+            background-color: var(--color-oferta);
+            color: white;
+            padding: 5px 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            z-index: 10;
+        }
+        /* --- FIN DE LOS ESTILOS DE ETIQUETA --- */
+
         .juego-info {
             padding: 20px;
             flex-grow: 1; 
@@ -208,8 +224,10 @@
             juegosParaMostrar.forEach(juego => {
                 const card = document.createElement('div');
                 card.className = 'juego-card';
+                // HTML: Lógica para añadir la etiqueta solo si existe
                 card.innerHTML = `
                     <div class="juego-imagen-wrapper">
+                        ${juego.etiqueta ? `<div class="juego-etiqueta">${juego.etiqueta}</div>` : ''}
                         <img src="${juego.portada}" alt="Portada de ${juego.nombre}">
                     </div>
                     <div class="juego-info">
