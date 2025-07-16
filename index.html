@@ -69,14 +69,20 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 30px;
+            /* La propiedad por defecto "align-items: stretch" hará que todas las
+               tarjetas de una fila tengan la misma altura. */
         }
 
+        /* --- LA ARQUITECTURA CORRECTA PARA LA TARJETA --- */
         .juego-card {
             background-color: var(--color-superficie);
             border-radius: 12px;
             border: 1px solid var(--color-borde);
             overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            
+            /* 1. Convertimos la tarjeta en una columna flexible.
+               Esto es CRUCIAL para que el contenido de dentro pueda estirarse. */
             display: flex;
             flex-direction: column;
         }
@@ -102,15 +108,21 @@
             transform: scale(1.05);
         }
         
-        /* --- LA SOLUCIÓN DEFINITIVA Y ROBUSTA --- */
         .juego-info {
             padding: 20px;
+            /* 2. Le decimos a esta sección que CREZCA para llenar el espacio
+               vertical extra que le da la tarjeta estirada. */
             flex-grow: 1; 
+            
+            /* 3. Volvemos a usar la estructura de columna flexible DENTRO de esta sección. */
             display: flex;
             flex-direction: column;
-            /* LA CLAVE: Empuja el primer elemento arriba y el último abajo */
+            
+            /* 4. LA MAGIA FINAL: Empujamos el contenido de arriba hacia arriba
+               y el contenido de abajo (el botón) hacia abajo. */
             justify-content: space-between;
         }
+        
         .juego-info h3 {
             margin: 0 0 10px 0;
             font-size: 1.4rem;
@@ -123,7 +135,7 @@
             font-weight: 700;
         }
         .juego-info .boton-comprar {
-            display: inline-block;
+            display: block; /* Usamos block para asegurar el comportamiento */
             background-color: var(--color-primario);
             color: white;
             padding: 12px 20px;
@@ -131,30 +143,12 @@
             text-decoration: none;
             text-align: center;
             font-weight: 600;
-            /* El botón se posiciona por el justify-content del padre, ya no necesita margen auto */
             transition: background-color 0.2s ease;
         }
         /* --- FIN DE LA SOLUCIÓN --- */
 
         .juego-info .boton-comprar:hover {
             background-color: #0056b3;
-        }
-
-        .loader {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border: 8px solid var(--color-borde);
-            border-top: 8px solid var(--color-primario);
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
 
         footer {
@@ -176,7 +170,7 @@
     <main>
         <input type="text" id="search-input" placeholder="Buscar por nombre...">
         
-        <div id="loader" class="loader"></div>
+        <!-- El loader ha sido quitado porque la carga es casi instantánea -->
         <div id="juegos-container"></div>
     </main>
     
@@ -217,7 +211,6 @@
 
         async function cargarJuegos() {
             const container = document.getElementById('juegos-container');
-            const loader = document.getElementById('loader');
 
             try {
                 const response = await fetch('https://api.github.com/repos/pepsend/catalogo/contents/_juegos');
@@ -239,17 +232,16 @@
                         const card = document.createElement('div');
                         card.className = 'juego-card';
                         
-                        // --- LA ESTRUCTURA HTML TAMBIÉN CAMBIA LIGERAMENTE ---
+                        // La estructura HTML es clave: un div para el texto y el botón como hermano.
                         card.innerHTML = `
                             <div class="juego-imagen-wrapper">
                                 <img src="${juego.portada}" alt="Portada de ${juego.nombre}">
                             </div>
                             <div class="juego-info">
-                                <div> <!-- Contenedor para el texto -->
+                                <div> <!-- Contenedor para el texto superior -->
                                     <h3>${juego.nombre}</h3>
                                     <p class="precio">${juego.precio}</p>
                                 </div>
-                                <!-- El botón ahora es un hermano, no un hijo del texto -->
                                 <a href="detalle.html?juego=${encodeURIComponent(juego.nombre)}&precio=${encodeURIComponent(juego.precio)}" class="boton-comprar">Ver Oferta</a>
                             </div>
                         `;
@@ -260,7 +252,6 @@
                 console.error('Error al cargar los juegos:', error);
                 container.innerHTML = '<p>Hubo un error al cargar los juegos. Revisa la consola para más detalles.</p>';
             } finally {
-                loader.style.display = 'none';
                 document.getElementById('search-input').addEventListener('input', filtrarJuegos);
             }
         }
