@@ -14,6 +14,7 @@
     <style>
         :root {
             --color-primario: #007bff;
+            --color-oferta: #dc3545;
             --color-fondo: #121212;
             --color-superficie: #1e1e1e;
             --color-texto-principal: #ffffff;
@@ -190,9 +191,13 @@
     <footer>
         <p>&copy; 2024 Tu Marca. Todos los derechos reservados.</p>
     </footer>
+
+    <!--  AQUÍ EMPIEZA LA MAGIA DEL NUEVO SISTEMA -->
     <script>
         let todosLosJuegos = [];
         const container = document.getElementById('juegos-container');
+        const API_URL = 'https://pepsend-backend.onrender.com/api/juegos';
+
         function renderJuegos(juegosParaMostrar) {
             container.innerHTML = '';
             juegosParaMostrar.forEach(juego => {
@@ -207,27 +212,13 @@
                             <h3>${juego.nombre}</h3>
                             <p class="precio">${juego.precio}</p>
                         </div>
-                        <a href="detalle.html?juego=${encodeURIComponent(juego.nombre)}&precio=${encodeURIComponent(juego.precio)}" class="boton-comprar">Ver Oferta</a>
+                        <a href="#" class="boton-comprar">Ver Oferta</a>
                     </div>
                 `;
                 container.appendChild(card);
             });
         }
-        function parseFrontmatter(text) {
-            const frontmatter = {};
-            const lines = text.split('\n');
-            if (lines[0] === '---') {
-                for (let i = 1; i < lines.length; i++) {
-                    if (lines[i] === '---') break;
-                    const line = lines[i];
-                    const parts = line.split(':');
-                    const key = parts[0].trim();
-                    const value = parts.slice(1).join(':').trim().replace(/['"]/g, '').trim();
-                    frontmatter[key] = value;
-                }
-            }
-            return frontmatter;
-        }
+
         function actualizarVista() {
             const filtro = document.getElementById('search-input').value.toLowerCase();
             const juegosFiltrados = todosLosJuegos.filter(juego => 
@@ -235,38 +226,37 @@
             );
             renderJuegos(juegosFiltrados);
         }
+
         async function init() {
             try {
-                const response = await fetch('https://api.github.com/repos/pepsend/catalogo/contents/_juegos');
-                if (!response.ok) throw new Error('No se pudo conectar con el repositorio.');
+                // ¡EL GRAN CAMBIO! Ya no hablamos con GitHub. Hablamos con nuestra API.
+                const response = await fetch(API_URL);
+                if (!response.ok) throw new Error('No se pudo conectar con el nuevo servidor.');
                 
-                const files = await response.json();
-                if (!Array.isArray(files)) {
-                    todosLosJuegos = [];
-                } else {
-                    const promesasDeJuegos = files
-                        .filter(file => file.type === 'file' && file.name.endsWith('.md'))
-                        .map(async file => {
-                            const fileResponse = await fetch(file.download_url);
-                            const fileContent = await fileResponse.text();
-                            const juego = parseFrontmatter(fileContent);
-                            const precioNumerico = parseInt(juego.precio.replace(/\D/g, ''), 10);
-                            return { ...juego, precioNumerico };
-                        });
-                    todosLosJuegos = await Promise.all(promesasDeJuegos);
-                }
+                let juegosDesdeAPI = await response.json();
+                
+                // Procesamos los datos para añadir el precio numérico que usan los botones de ordenar
+                todosLosJuegos = juegosDesdeAPI.map(juego => {
+                    const precioNumerico = parseInt(juego.precio.replace(/\D/g, ''), 10);
+                    return { ...juego, precioNumerico };
+                });
+
                 actualizarVista();
+
             } catch (error) {
-                console.error('Error al cargar los juegos:', error);
-                container.innerHTML = '<p>Hubo un error al cargar los juegos. Revisa la consola para más detalles.</p>';
+                console.error('Error al cargar los juegos desde la nueva API:', error);
+                container.innerHTML = `<p>Hubo un error al cargar los juegos desde el nuevo servidor. Revisa la consola para más detalles.</p>`;
             }
+
             document.getElementById('search-input').addEventListener('input', actualizarVista);
+            
             const sortButtons = document.querySelectorAll('.sort-button');
             sortButtons.forEach(button => {
                 button.addEventListener('click', (e) => {
                     sortButtons.forEach(btn => btn.classList.remove('active'));
                     e.currentTarget.classList.add('active');
                     const sortType = e.currentTarget.id;
+                    
                     if (sortType === 'sort-name-az') {
                         todosLosJuegos.sort((a, b) => a.nombre.localeCompare(b.nombre));
                     } else if (sortType === 'sort-price-asc') {
@@ -274,10 +264,12 @@
                     } else if (sortType === 'sort-price-desc') {
                         todosLosJuegos.sort((a, b) => b.precioNumerico - a.precioNumerico);
                     }
+                    
                     actualizarVista();
                 });
             });
         }
+
         document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
