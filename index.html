@@ -167,16 +167,20 @@
     </style>
 </head>
 <body>
+
     <header>
         <h1>Game Deals</h1>
     </header>
+
     <main>
+        <!-- HTML: Contenedor para los controles con el texto final -->
         <div class="controls-wrapper">
             <input type="text" id="search-input" placeholder="Buscar por nombre...">
             <div id="sorting-controls">
                 <button class="sort-button" id="sort-name-az">Nombre A-Z</button>
-                <button class="sort-button" id="sort-price-asc">Precio ↑</button>
-                <button class="sort-button" id="sort-price-desc">Precio ↓</button>
+                <!-- ¡AQUÍ ESTÁ EL CAMBIO FINAL! -->
+                <button class="sort-button" id="sort-price-asc">Desde el más barato</button>
+                <button class="sort-button" id="sort-price-desc">Desde el más caro</button>
             </div>
         </div>
         
@@ -188,12 +192,11 @@
     </footer>
 
     <script>
-        let todosLosJuegos = []; // Array para guardar la lista maestra de juegos
+        let todosLosJuegos = [];
         const container = document.getElementById('juegos-container');
 
-        // Función para "dibujar" los juegos en la página
         function renderJuegos(juegosParaMostrar) {
-            container.innerHTML = ''; // Limpiamos el contenedor
+            container.innerHTML = '';
             juegosParaMostrar.forEach(juego => {
                 const card = document.createElement('div');
                 card.className = 'juego-card';
@@ -222,7 +225,7 @@
                     const line = lines[i];
                     const parts = line.split(':');
                     const key = parts[0].trim();
-                    const value = parts.slice(1).join(':').trim().replace(/['"]/g, '');
+                    const value = parts.slice(1).join(':').trim().replace(/['"]/g, '').trim();
                     frontmatter[key] = value;
                 }
             }
@@ -281,7 +284,7 @@
                         todosLosJuegos.sort((a, b) => b.precioNumerico - a.precioNumerico);
                     }
                     
-                    actualizarVista(); // Volvemos a renderizar y aplicar el filtro
+                    actualizarVista();
                 });
             });
         }
