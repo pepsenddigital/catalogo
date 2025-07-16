@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Juegos</title>
+    
+    <!-- CSS: Estilos para la página y las tarjetas de juegos -->
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            background-color: #f0f2f5;
+            color: #1c1e21;
+        }
+        header {
+            background-color: #ffffff;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid #dddfe2;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            margin: 0;
+            font-size: 2rem;
+            color: #0d1117;
+        }
+        main {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        /* Contenedor de la cuadrícula de juegos */
+        #juegos-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        /* Estilo de cada tarjeta de juego */
+        .juego-card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            display: flex;
+            flex-direction: column;
+        }
+        .juego-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        .juego-card img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+        }
+        .juego-info {
+            padding: 15px;
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .juego-info h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.2rem;
+        }
+        .juego-info p {
+            margin: 0;
+            font-size: 1.1rem;
+            color: #05a305;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Mi Catálogo de Ofertas</h1>
+    </header>
+
+    <main>
+        <!-- HTML: Aquí es donde el JavaScript añadirá los juegos -->
+        <div id="juegos-container">
+            <!-- Los juegos se cargarán aquí... -->
+        </div>
+    </main>
+
+    <!-- JavaScript: La magia que lee los datos y los muestra -->
+    <script>
+        // Función para leer los datos de un archivo y convertirlos en un objeto
+        // Necesaria porque los datos se guardan en formato Markdown Frontmatter
+        function parseFrontmatter(text) {
+            const frontmatter = {};
+            const lines = text.split('\n');
+            // Busca la sección ---
+            if (lines[0] === '---') {
+                for (let i = 1; i < lines.length; i++) {
+                    if (lines[i] === '---') break; // Fin de la sección
+                    const line = lines[i];
+                    const parts = line.split(':');
+                    const key = parts[0].trim();
+                    const value = parts.slice(1).join(':').trim().replace(/['"]/g, ''); // Quita comillas
+                    frontmatter[key] = value;
+                }
+            }
+            return frontmatter;
+        }
+
+        // Función principal que se ejecuta al cargar la página
+        async function cargarJuegos() {
+            const container = document.getElementById('juegos-container');
+            
+            try {
+                // 1. Usar la API de GitHub para listar los archivos en la carpeta _juegos
+                const response = await fetch('https://api.github.com/repos/pepsend/catalogo/contents/_juegos');
+                if (!response.ok) {
+                    throw new Error('No se pudo conectar con el repositorio de GitHub.');
+                }
+                const files = await response.json();
+
+                if (files.length === 0) {
+                    container.innerHTML = '<p>Aún no has añadido ningún juego. ¡Ve al panel de administración para empezar!</p>';
+                    return;
+                }
+
+                // 2. Por cada archivo encontrado, obtener su contenido
+                for (const file of files) {
+                    if (file.type === 'file' && file.name.endsWith('.md')) {
+                        const fileResponse = await fetch(file.download_url);
+                        const fileContent = await fileResponse.text();
+                        
+                        // 3. Extraer los datos (nombre, precio, portada)
+                        const juego = parseFrontmatter(fileContent);
+
+                        // 4. Crear la tarjeta HTML para el juego
+                        const card = document.createElement('div');
+                        card.className = 'juego-card';
+                        card.innerHTML = `
+                            <img src="${juego.portada}" alt="Portada de ${juego.nombre}">
+                            <div class="juego-info">
+                                <h3>${juego.nombre}</h3>
+                                <p>${juego.precio}</p>
+                            </div>
+                        `;
+                        
+                        // 5. Añadir la tarjeta a la página
+                        container.appendChild(card);
+                    }
+                }
+            } catch (error) {
+                console.error('Error al cargar los juegos:', error);
+                container.innerHTML = '<p>Hubo un error al cargar los juegos. Revisa la consola para más detalles.</p>';
+            }
+        }
+
+        // Ejecutar la función cuando la página esté lista
+        document.addEventListener('DOMContentLoaded', cargarJuegos);
+    </script>
+
+</body>
+</html>
+
