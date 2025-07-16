@@ -16,10 +16,19 @@ collections:
     create: true
     slug: "{{slug}}"
     fields:
-      - { label: "Nombre del Juego", name: "nombre", widget: "string" }
-      - { label: "Precio", name: "precio", widget: "string" }
-      - { label: "Portada del Juego", name: "portada", widget: "image" }
-      # --- ¡AQUÍ ESTÁ LA NUEVA SECCIÓN! ---
+      - label: "Nombre del Juego"
+        name: "nombre"
+        widget: "string"
+
+      - label: "Precio"
+        name: "precio"
+        widget: "string"
+
+      - label: "Portada del Juego"
+        name: "portada"
+        widget: "image"
+      
+      # --- ESTA ES LA NUEVA SECCIÓN, CON LA SINTAXIS CORRECTA ---
       - label: "Etiqueta (Opcional)"
         name: "etiqueta"
         widget: "string"
