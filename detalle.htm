@@ -108,13 +108,16 @@
             const params = new URLSearchParams(window.location.search);
             const nombreJuego = params.get('juego') || 'un juego';
 
-            // --- ¡IMPORTANTE! CAMBIA ESTE NÚMERO ---
-            // Pon tu número de WhatsApp con el código de país, sin el "+", espacios ni guiones.
-            // Por ejemplo, si tu número es de Argentina (+54), sería: 54911...
-            const telefono = '+56992220014'; 
+            // Mantenemos tu número de teléfono.
+            // Importante: para la API es mejor quitar el "+"
+            const telefono = '56992220014'; 
             
             const mensajeBase = `Hola, estoy interesado en el juego: ${nombreJuego}. He leído todo el apartado de descripción.`;
-            const linkFinal = `https://wa.me/${telefono}?text=${encodeURIComponent(mensajeBase)}`;
+
+            // --- LA CORRECCIÓN APLICADA ---
+            // Usamos la URL de la API de WhatsApp, que es más directa y confiable.
+            const linkFinal = `https://api.whatsapp.com/send?phone=${telefono}&text=${encodeURIComponent(mensajeBase)}`;
+            
             document.getElementById('whatsapp-link').href = linkFinal;
         });
     </script>
