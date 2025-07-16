@@ -108,15 +108,24 @@
             const params = new URLSearchParams(window.location.search);
             const nombreJuego = params.get('juego') || 'un juego';
 
-            // Mantenemos tu número de teléfono.
-            // Importante: para la API es mejor quitar el "+"
-            const telefono = '56992220014'; 
-            
+            const telefono = '56992220014'; // Tu número sin el "+"
             const mensajeBase = `Hola, estoy interesado en el juego: ${nombreJuego}. He leído todo el apartado de descripción.`;
+            const mensajeCodificado = encodeURIComponent(mensajeBase);
 
-            // --- LA CORRECCIÓN APLICADA ---
-            // Usamos la URL de la API de WhatsApp, que es más directa y confiable.
-            const linkFinal = `https://api.whatsapp.com/send?phone=${telefono}&text=${encodeURIComponent(mensajeBase)}`;
+            // --- LÓGICA DEL ENLACE INTELIGENTE ---
+            
+            // 1. Detectamos si el usuario está en un dispositivo móvil
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            
+            let linkFinal;
+
+            if (isMobile) {
+                // 2. Si es móvil, usamos el enlace directo a la app
+                linkFinal = `whatsapp://send?phone=${telefono}&text=${mensajeCodificado}`;
+            } else {
+                // 3. Si es escritorio, usamos el enlace web estándar
+                linkFinal = `https://api.whatsapp.com/send?phone=${telefono}&text=${mensajeCodificado}`;
+            }
             
             document.getElementById('whatsapp-link').href = linkFinal;
         });
