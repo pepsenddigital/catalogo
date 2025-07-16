@@ -1,5 +1,7 @@
 backend:
-  name: github
+  # ESTE ES EL CAMBIO. ESTA ES LA PUERTA B.
+  name: git-gateway 
+
   repo: pepsend/catalogo # La ruta a tu repositorio
   branch: main # La rama principal
 
