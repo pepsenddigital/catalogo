@@ -28,7 +28,6 @@ collections:
         name: "portada"
         widget: "image"
       
-      # --- ESTA ES LA NUEVA SECCIÓN, CON LA SINTAXIS CORRECTA ---
       - label: "Etiqueta (Opcional)"
         name: "etiqueta"
         widget: "string"
