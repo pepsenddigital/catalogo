@@ -2,7 +2,6 @@ backend:
   name: github
   repo: pepsend/catalogo
   branch: main
-  site_domain: pepsendofertas.netlify.app
 
 publish_mode: editorial_workflow
 
@@ -16,20 +15,6 @@ collections:
     create: true
     slug: "{{slug}}"
     fields:
-      - label: "Nombre del Juego"
-        name: "nombre"
-        widget: "string"
-
-      - label: "Precio"
-        name: "precio"
-        widget: "string"
-
-      - label: "Portada del Juego"
-        name: "portada"
-        widget: "image"
-      
-      - label: "Etiqueta (Opcional)"
-        name: "etiqueta"
-        widget: "string"
-        required: false
-        hint: "Escribe aquí la etiqueta que aparecerá sobre la imagen (ej: ¡Oferta!, Nuevo, Más Vendido). Déjalo en blanco si no quieres ninguna etiqueta."
+      - { label: "Nombre del Juego", name: "nombre", widget: "string" }
+      - { label: "Precio", name: "precio", widget: "string" }
+      - { label: "Portada del Juego", name: "portada", widget: "image" }
