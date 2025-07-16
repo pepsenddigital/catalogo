@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo de Ofertas</title>
     
+    <!-- FAVICON: Ahora apunta a la raíz del proyecto -->
+    <link rel="icon" type="image/png" href="/logo.png">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
@@ -26,16 +29,18 @@
         }
         header {
             background-color: var(--color-superficie);
-            padding: 20px 40px;
+            padding: 15px 40px;
             text-align: center;
             border-bottom: 1px solid var(--color-borde);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
-        h1 {
-            margin: 0;
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--color-primario);
+        .site-logo {
+            height: 60px;
+            width: auto;
+            transition: transform 0.2s ease-in-out;
+        }
+        .site-logo:hover {
+            transform: scale(1.05);
         }
         main {
             padding: 40px 20px;
@@ -169,16 +174,17 @@
 <body>
 
     <header>
-        <h1>Game Deals</h1>
+        <!-- HTML: Ahora el logo apunta a la raíz del proyecto -->
+        <a href="/">
+            <img src="/logo.png" alt="Pepsend Digital Logo" class="site-logo">
+        </a>
     </header>
 
     <main>
-        <!-- HTML: Contenedor para los controles con el texto final -->
         <div class="controls-wrapper">
             <input type="text" id="search-input" placeholder="Buscar por nombre...">
             <div id="sorting-controls">
                 <button class="sort-button" id="sort-name-az">Nombre A-Z</button>
-                <!-- ¡AQUÍ ESTÁ EL CAMBIO FINAL! -->
                 <button class="sort-button" id="sort-price-asc">Desde el más barato</button>
                 <button class="sort-button" id="sort-price-desc">Desde el más caro</button>
             </div>
