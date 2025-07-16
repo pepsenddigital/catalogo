@@ -1,20 +1,18 @@
 backend:
-  # ESTE ES EL CAMBIO. ESTA ES LA PUERTA B.
-  name: git-gateway 
+  name: github
+  repo: pepsend/catalogo
+  branch: main
 
-  repo: pepsend/catalogo # La ruta a tu repositorio
-  branch: main # La rama principal
-
-media_folder: "assets/images" # Dónde se guardarán las imágenes que subas
-public_folder: "/assets/images" # Cómo se accederá a las imágenes desde el sitio
+media_folder: "assets/images"
+public_folder: "/assets/images"
 
 collections:
-  - name: "juegos" # El nombre de nuestra colección de datos
-    label: "Juegos" # Cómo se verá en el panel
-    folder: "_juegos" # La carpeta donde se guardan los archivos
-    create: true # Permitir crear nuevos juegos
-    slug: "{{slug}}" # Cómo se nombrarán los archivos
-    fields: # Los campos para cada juego
+  - name: "juegos"
+    label: "Juegos"
+    folder: "_juegos"
+    create: true
+    slug: "{{slug}}"
+    fields:
       - {label: "Nombre del Juego", name: "nombre", widget: "string"}
       - {label: "Precio", name: "precio", widget: "string"}
       - {label: "Portada del Juego", name: "portada", widget: "image"}
