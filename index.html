@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo de Ofertas</title>
     
-    <!-- FAVICON: Ahora apunta a la raíz del proyecto -->
     <link rel="icon" type="image/png" href="/logo.png">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,19 +28,23 @@
         }
         header {
             background-color: var(--color-superficie);
-            padding: 15px 40px;
+            padding: 20px 40px; /* Aumentamos el padding para dar más aire al logo grande */
             text-align: center;
             border-bottom: 1px solid var(--color-borde);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
+        
+        /* --- ESTILOS DEL LOGO CORREGIDOS --- */
         .site-logo {
-            height: 60px;
+            /* ¡AQUÍ ESTÁ LA MAGIA! Aumentamos la altura a 100px */
+            height: 100px; 
             width: auto;
             transition: transform 0.2s ease-in-out;
         }
         .site-logo:hover {
             transform: scale(1.05);
         }
+        
         main {
             padding: 40px 20px;
             max-width: 1400px;
@@ -174,7 +177,6 @@
 <body>
 
     <header>
-        <!-- HTML: Ahora el logo apunta a la raíz del proyecto -->
         <a href="/">
             <img src="/logo.png" alt="Pepsend Digital Logo" class="site-logo">
         </a>
