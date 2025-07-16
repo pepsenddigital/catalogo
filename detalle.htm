@@ -100,7 +100,7 @@
         </div>
     </main>
     <footer>
-        <p>&copy; Pepsend Digital 2025. Todos los derechos reservados.</p>
+        <p>&copy; 2024 Tu Marca. Todos los derechos reservados.</p>
     </footer>
 
     <script>
@@ -109,21 +109,27 @@
             const nombreJuego = params.get('juego') || 'un juego';
 
             const telefono = '56992220014'; // Tu número sin el "+"
-            const mensajeBase = `Hola, estoy interesado en el juego: ${nombreJuego}. He leído todo el apartado de descripción.`;
+            
+            // --- ¡AQUÍ ESTÁ LA MAGIA! ---
+
+            // 1. Ponemos el nombre del juego en negrita para WhatsApp
+            const nombreEnNegrita = `*${nombreJuego}*`;
+            
+            // 2. Obtenemos el enlace de la página actual para incluirlo
+            const linkDelJuego = window.location.href;
+
+            // 3. Construimos el mensaje final, más profesional
+            const mensajeBase = `Hola, estoy interesado en el juego: ${nombreEnNegrita}.\n\nHe leído todo el apartado de descripción.\n\nLink de referencia: ${linkDelJuego}`;
+            
             const mensajeCodificado = encodeURIComponent(mensajeBase);
 
-            // --- LÓGICA DEL ENLACE INTELIGENTE ---
-            
-            // 1. Detectamos si el usuario está en un dispositivo móvil
+            // 4. Lógica del enlace inteligente para móvil/escritorio
             const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-            
             let linkFinal;
 
             if (isMobile) {
-                // 2. Si es móvil, usamos el enlace directo a la app
                 linkFinal = `whatsapp://send?phone=${telefono}&text=${mensajeCodificado}`;
             } else {
-                // 3. Si es escritorio, usamos el enlace web estándar
                 linkFinal = `https://api.whatsapp.com/send?phone=${telefono}&text=${mensajeCodificado}`;
             }
             
