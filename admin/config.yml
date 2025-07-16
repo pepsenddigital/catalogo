@@ -1,7 +1,6 @@
 backend:
-  name: github
-  repo: pepsend/catalogo
-  branch: main
+  # ESTE ES EL CAMBIO. ESTA ES LA ÚNICA JUGADA QUE NOS QUEDA.
+  name: git-gateway 
 
 media_folder: "assets/images"
 public_folder: "/assets/images"
