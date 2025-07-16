@@ -66,28 +66,30 @@
             box-shadow: 0 8px 24px rgba(0, 123, 255, 0.2);
         }
         
-        /* --- ESTA ES LA SOLUCIÓN PROFESIONAL --- */
-        /* 1. Creamos el "marco" con una altura fija */
+        /* --- LA SOLUCIÓN MAESTRA PARA IMÁGENES CUADRADAS Y NÍTIDAS --- */
+        /* 1. Creamos el "marco" perfectamente cuadrado */
         .juego-imagen-wrapper {
-            height: 400px; /* Altura fija para TODOS los marcos */
-            overflow: hidden; /* Esconde cualquier parte de la imagen que se salga del marco */
-            background-color: #000; /* Fondo negro mientras carga la imagen */
+            /* LA MAGIA: Forzamos el marco a tener una proporción 1:1 */
+            aspect-ratio: 1 / 1; 
+            overflow: hidden;
+            /* Fondo negro para un look elegante si la imagen no es cuadrada */
+            background-color: #000;
         }
         
-        /* 2. La imagen de dentro se adapta al marco de forma inteligente */
+        /* 2. La imagen se contiene dentro del marco sin ser recortada */
         .juego-imagen-wrapper img {
             width: 100%;
             height: 100%;
-            /* LA MAGIA: Rellena el marco, mantiene la proporción y recorta lo que sobre */
-            object-fit: cover; 
+            /* LA MAGIA: Muestra la imagen completa, sin recortar */
+            object-fit: contain; 
             transition: transform 0.4s ease; /* Animación suave para el zoom */
         }
         
-        /* 3. Efecto extra: Hacemos zoom en la imagen al pasar el ratón por la tarjeta */
+        /* 3. El efecto de zoom se mantiene */
         .juego-card:hover .juego-imagen-wrapper img {
             transform: scale(1.05);
         }
-        /* --- FIN DE LA SOLUCIÓN --- */
+        /* --- FIN DE LA SOLUCIÓN MAESTRA --- */
 
         .juego-info {
             padding: 20px;
@@ -207,7 +209,6 @@
                         const card = document.createElement('div');
                         card.className = 'juego-card';
                         
-                        // Añadimos la estructura del "marco inteligente" aquí
                         card.innerHTML = `
                             <div class="juego-imagen-wrapper">
                                 <img src="${juego.portada}" alt="Portada de ${juego.nombre}">
