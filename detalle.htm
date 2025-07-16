@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- El título ahora cambiará dinámicamente -->
     <title>Detalles del Producto</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,13 +42,36 @@
             max-width: 800px;
             margin: 0 auto;
         }
+        
+        /* --- LA NUEVA TARJETA DE RESUMEN DEL PRODUCTO --- */
+        .producto-resumen {
+            background-color: var(--color-superficie);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid var(--color-borde);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .producto-resumen h2 {
+            margin: 0 0 10px 0;
+            font-size: 2.2rem;
+            color: var(--color-texto-principal);
+        }
+        .producto-resumen p {
+            margin: 0;
+            font-size: 1.8rem;
+            color: var(--color-primario);
+            font-weight: 600;
+        }
+        /* --- FIN DE LA TARJETA --- */
+
         .descripcion-box {
             background-color: var(--color-superficie);
             padding: 30px;
             border-radius: 12px;
             border: 1px solid var(--color-borde);
         }
-        .descripcion-box h2 {
+        .descripcion-box h3 {
             margin-top: 0;
             font-size: 1.8rem;
             color: var(--color-primario);
@@ -89,8 +113,13 @@
         <h1>Game Deals</h1>
     </header>
     <main>
+        <!-- HTML: El nuevo contenedor para el resumen del juego -->
+        <div id="producto-resumen-container" class="producto-resumen">
+            <!-- El nombre y el precio se cargarán aquí con JavaScript -->
+        </div>
+
         <div class="descripcion-box">
-            <h2>Cómo Funciona el Producto</h2>
+            <h3>Cómo Funciona el Producto</h3>
             <p>
                 <strong>Cuenta Principal:</strong> Disfruta acceso inmediato al juego o suscripción directamente desde tu perfil de Xbox al vincular un correo y contraseña. Esta opción te permite jugar sin complicaciones, sin necesidad de canjear códigos, y a un precio mucho más accesible. Perfecta para quienes valoran la rapidez, la comodidad y el ahorro. 🎮✨
             </p>
@@ -106,24 +135,32 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const params = new URLSearchParams(window.location.search);
-            const nombreJuego = params.get('juego') || 'un juego';
+            const nombreJuego = params.get('juego');
+            const precioJuego = params.get('precio');
 
-            const telefono = '56992220014'; // Tu número sin el "+"
-            
             // --- ¡AQUÍ ESTÁ LA MAGIA! ---
-
-            // 1. Ponemos el nombre del juego en negrita para WhatsApp
-            const nombreEnNegrita = `*${nombreJuego}*`;
             
-            // 2. Obtenemos el enlace de la página actual para incluirlo
+            // 1. Mostramos los datos del juego en la nueva tarjeta de resumen
+            const resumenContainer = document.getElementById('producto-resumen-container');
+            if (nombreJuego && precioJuego) {
+                resumenContainer.innerHTML = `
+                    <h2>${nombreJuego}</h2>
+                    <p>${precioJuego}</p>
+                `;
+                // Actualizamos el título de la página
+                document.title = `${nombreJuego} - Detalles`;
+            } else {
+                resumenContainer.innerHTML = `<h2>Detalles del Producto</h2>`;
+            }
+
+            // 2. Construimos el mensaje de WhatsApp enriquecido
+            const telefono = '56992220014'; 
+            const nombreEnNegrita = `*${nombreJuego || 'un juego'}*`;
             const linkDelJuego = window.location.href;
-
-            // 3. Construimos el mensaje final, más profesional
             const mensajeBase = `Hola, estoy interesado en el juego: ${nombreEnNegrita}.\n\nHe leído todo el apartado de descripción.\n\nLink de referencia: ${linkDelJuego}`;
-            
             const mensajeCodificado = encodeURIComponent(mensajeBase);
 
-            // 4. Lógica del enlace inteligente para móvil/escritorio
+            // 3. Lógica del enlace inteligente para móvil/escritorio
             const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
             let linkFinal;
 
