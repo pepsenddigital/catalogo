@@ -14,7 +14,6 @@
     <style>
         :root {
             --color-primario: #007bff;
-            --color-oferta: #dc3545;
             --color-fondo: #121212;
             --color-superficie: #1e1e1e;
             --color-texto-principal: #ffffff;
@@ -106,6 +105,7 @@
             background-color: var(--color-superficie);
             border-radius: 12px;
             border: 1px solid var(--color-borde);
+            overflow: hidden;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             display: flex;
             flex-direction: column;
@@ -115,7 +115,6 @@
             box-shadow: 0 8px 24px rgba(0, 123, 255, 0.2);
         }
         .juego-imagen-wrapper {
-            position: relative; 
             aspect-ratio: 3 / 4; 
             overflow: hidden;
             background-color: #000;
@@ -128,20 +127,6 @@
         }
         .juego-card:hover .juego-imagen-wrapper img {
             transform: scale(1.05);
-        }
-        .juego-etiqueta {
-            position: absolute;
-            top: 25px;
-            right: -35px;
-            transform: rotate(45deg);
-            background-color: var(--color-oferta);
-            color: white;
-            padding: 5px 35px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            z-index: 10;
         }
         .juego-info {
             padding: 20px;
@@ -215,7 +200,6 @@
                 card.className = 'juego-card';
                 card.innerHTML = `
                     <div class="juego-imagen-wrapper">
-                        ${juego.etiqueta ? `<div class="juego-etiqueta">${juego.etiqueta}</div>` : ''}
                         <img src="${juego.portada}" alt="Portada de ${juego.nombre}">
                     </div>
                     <div class="juego-info">
